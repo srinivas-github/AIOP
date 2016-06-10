@@ -24,7 +24,7 @@ int findMax(int arr[], nt low, int high)
     if ( (high == low+1) && (arr[low] >= arr[high]))
         return arr[low];
 
-    if ( (high == low+1) && (Arr[low] < arr[high]))
+    if ( (high == low+1) && (arr[low] < arr[high]))
         return arr[high];
 
     int mid = (low + high)/2;
@@ -43,6 +43,10 @@ int main()
     int sz = sizeof(arr)/sizeof(arr[0]);
     int max = findMax(arr, 0, sz);
     printf("Max Element: %d\n", max);
+
+    int arr2[] = {120, 100, 80, 20, 0};
+    int max1 = findMax(arr2, 0, sizeof(arr2)/sizeof(arr2[0]));
+    printf("Max element; %d\n", max1);
 
     return 0;
 }
