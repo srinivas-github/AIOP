@@ -19,3 +19,21 @@ int main()
     return 0;
 }
 
+
+/**
+ * Another Sample to get individual words
+ */
+/* get the first word from the message, seperated by
+	 * space character */
+	 char* word;
+	 word = strtok(message, " ");
+         printf("1st word: %s\n", word);
+/* get the second word from the message, NULL must be
+* used to get tokens from the previous string now */
+word = strtok(NULL, " ");
+printf("2nd word: %s\n", word);
+/* the following loop gets the rest of the words until the
+ * end of the message */
+while ((word = strtok(NULL, " ")) != NULL)
+printf("Next: %s\n", word);
+return 0;
