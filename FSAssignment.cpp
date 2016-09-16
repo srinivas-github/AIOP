@@ -8,7 +8,7 @@
  */
 typedef enum command
 {
-    PLACE = 0x51,
+    PLACE = 1,
     CLEAR,
     MOVE,
     DUMP,
@@ -22,7 +22,7 @@ typedef enum command
  */
 typedef enum color
 {
-    GREEN = 0x102,
+    GREEN = 8,
     YELLOW,
     BLACK,
     WHITE,
@@ -37,48 +37,28 @@ typedef enum color
  */
 typedef enum object
 {
-    BALL = 0x201,
+    BALL = 15,
     PEN,
     ERASER,
     PHONE,
     WALLET,
     ERRO
-
 }Object;
 
+
 /**
- * Container type
+ * Storage Type (Container/Surface)
  */
-typedef enum containrertype
+typedef enum storageType
 {
-    POCKET = 0x301,
+    POCKET = 21,
     BAG,
     DRAWER,
-    NOTCONT,
-    ERRCONT
-}ContainerType;
- 
-/**
- * Surface Type
- */
-typedef enum surfacetype
-{
-    SHELF = 0x401,
+    SHELF,
     DESKTOP,
     FLOOR,
-    NOTSUR,
-    ERRSUR
-}SurfaceType;
-
-/**
- * Place types
- */
-typedef struct placetype
-{
-    ContainerType containerType;
-    SurfaceType surfaceType;
-}PlaceType;
-
+    ERRSTORAGE
+}StorageType;
 
 /**
  * Color and Object 
@@ -92,31 +72,66 @@ typedef struct colorandobject
 
 
 /**
+ * Container defs
+ */
+typedef struct pocketCont
+{
+    int count;
+    ColorAndObject clrAndObj;
+}PocketCont;
+
+typedef struct bagCont
+{
+    int count;
+    ColorAndObject clrAndObj;
+}BagCont;
+
+typedef struct drawerCont
+{
+    int count;
+    ColorAndObject clrAndObj;
+}DrawerCont;
+
+/**
  * struct Container
  */
 typedef struct container
 {
-    int pocket;
-    int bag;
-    int drawer;
-    ColorAndObject colorObj;
+    PocketCont pocket;
+    BagCont bag;
+    DrawerCont drawer;
 }Container;
 
 /**
- * struct surface
+ * surface defs
  */
+typedef struct shelfSur
+{
+    int count;
+    ColorAndObject clrAndObj;
+}ShelfSurface; 
+ 
+typedef struct desktopSur
+{
+    int count;
+    ColorAndObject clrAndObj;
+}DesktopSurface; 
+
+typedef struct floorSur
+{
+    int count;
+    ColorAndObject clrAndObj;
+}FloorSurface; 
+
 typedef struct surface
 {
-    int shelf;
-    int desktop;
-    int floor;
-    ColorAndObject colorObj;
-
+    ShelfSurface shelf;
+    DesktopSurface desktop;
+    FloorSurface floor;
 }Surface;
 
-
 /**
- * struct destination
+ * Destination
  */
 typedef struct destination
 {
@@ -131,18 +146,32 @@ typedef struct destination
 CommandType getCmd(char* cmd)
 {
     CommandType cmdType;
-    if (strcmp(cmd, "place") == 0)
+    printf("Received Command: %s\n", cmd);
+    if (strncmp(cmd, "place", 5) == 0)
+    {
+        printf(" assign place command...\n");
         cmdType = PLACE;
-    else if (strcmp(cmd, "clear") == 0)
+    }
+    else if (strncmp(cmd, "clear", 5) == 0)
+    {
         cmdType = CLEAR;
-    else if (strcmp(cmd, "move") == 0)
+    }
+    else if (strncmp(cmd, "move", 4) == 0)
+    {
         cmdType = MOVE;
-    else if (strcmp(cmd, "show") == 0)
+    }
+    else if (strncmp(cmd, "show", 4) == 0)
+    {
         cmdType = SHOW;
-    else if (strcmp(cmd, "dump") == 0)
+    }
+    else if (strncmp(cmd, "dump", 4) == 0)
+    {
         cmdType = DUMP;
-    else if (strcmp(cmd, "reset") == 0)
+    }
+    else if (strncmp(cmd, "reset", 5) == 0)
+    {
         cmdType = RESET;
+    }
     else
         cmdType = ERRCMD;
 
@@ -155,19 +184,33 @@ CommandType getCmd(char* cmd)
 Color getColor(char* col)
 {
     Color colType;
-
-    if (strcmp(col, "green") == 0)
+    printf("Received Color: %s\n", col);
+   
+    if (strncmp(col, "green", 5) == 0)
+    {
         colType = GREEN;
-    else if (strcmp(col, "yellow") == 0)
+    }
+    else if (strncmp(col, "yellow", 6) == 0)
+    {
         colType = YELLOW;
-    else if (strcmp(col, "black") == 0)
+        printf("yellow color assign..\n");
+    }
+    else if (strncmp(col, "black", 5) == 0)
+    {
         colType = BLACK;
-    else if (strcmp(col, "white") == 0)
+    }
+    else if (strncmp(col, "white", 5) == 0)
+    {
         colType = WHITE;
-    else if (strcmp(col, "blue") == 0)
+    }
+    else if (strncmp(col, "blue", 4) == 0)
+    {
         colType = BLUE;
-    else if (strcmp(col, "red") == 0)
+    }
+    else if (strncmp(col, "red", 3) == 0)
+    {
         colType = RED;
+    }
     else
         colType = ERRC;
 
@@ -181,95 +224,107 @@ Color getColor(char* col)
 Object getObject(char* obj)
 {
     Object objType;
+    printf("Object received: %s\n", obj);
 
-    if (strcmp(obj, "ball") == 0)
+    if (strncmp(obj, "ball", 4) == 0)
+    {
         objType = BALL;
-    else if (strcmp(obj, "pen") == 0)
+    }
+    else if (strncmp(obj, "pen", 3) == 0)
+    {
         objType = PEN;
-    else if (strcmp(obj, "eraser") == 0)
+    }
+    else if (strncmp(obj, "eraser", 6) == 0)
+    {
+        printf("eraser object assign...\n");
         objType = ERASER;
-    else if (strcmp(obj, "phone") == 0)
+    }
+    else if (strncmp(obj, "phone", 5) == 0)
+    {
         objType = PHONE;
-    else if (strcmp(obj, "wallet") == 0)
+    }
+    else if (strncmp(obj, "wallet", 6) == 0)
+    {
         objType = WALLET;
-    else 
+    }
+    else
+    {  
          objType = ERRO;
+    }
+
     return objType;
-
 }
 
 /**
- * get the container type
+ * get the storage type
  */
-ContainerType getContainer(char* cnt)
+StorageType getStorageType(char* store)
 {
-    printf("Received container: %s\n", cnt);
-    ContainerType cntType;
+    printf("Received container: %s\n", store);
+    StorageType storeType;
 
-    if (strcmp(cnt, "pocket")== 0)
-    {
-        cntType = POCKET;
-        printf("assigned pocket....");
-    }
-    else if (strcmp(cnt, "bag") == 0)
-    {
-        cntType = BAG;
-    }
-    else if (strcmp(cnt, "drawer") == 0)
-        cntType = DRAWER;
-    else 
-        cntType = ERRCONT;
-
-    
-    return cntType;
+    if (strncmp(store, "pocket", 6) == 0)
+         storeType = POCKET;
+    else if (strncmp(store, "bag", 3) == 0)
+        storeType = BAG;
+    else if (strncmp(store, "drawer", 6) == 0)
+        storeType = DRAWER;
+    else if (strncmp(store, "shelf",5) == 0)
+        storeType = SHELF;
+    else if (strncmp(store, "desktop", 7) == 0)
+        storeType = DESKTOP;
+    else if(strncmp(store, "floor", 5) == 0)
+        storeType = FLOOR;
+    else
+		storeType = ERRSTORAGE;
+	
+    return storeType;
 }
 
-
-/**
- * get the surface type
- */
-SurfaceType getSurfaceType(char* surf)
-{
-    SurfaceType surfType;
-    if (strcmp(surf, "shelf") == 0)
-        surfType = SHELF;
-    else if (strcmp(surf, "desktop") == 0)
-        surfType = DESKTOP;
-    else if(strcmp(surf, "floor") == 0)
-        surfType = FLOOR;
-    else 
-        surfType = ERRSUR;
-
-    return surfType;
-}
 
 /**
  * Populate a destination
  */
-void populateDest(Color color, Object object, PlaceType place, Destination** dest)
+void populateDest(Color color, Object object, StorageType storeType, Destination* tempDest, Destination** mainDest)
 {
     printf("populateDest received objects are:\n");
     printf("color: %d\n", color);
     printf("object: %d\n", object);
-    printf("Container: %d\n", place.containerType);
-    printf("Surface: %d\n", place.surfaceType);
-
+    printf("Storage: %d\n", storeType);
 
     Destination* newDest = (Destination*)malloc(sizeof(Destination));
-    
+    switch(storeType)
+    {
+        case POCKET:
+            if ( tempDest->container.pocket.count == 1)
+            {
+                printf("pocket is full\n");
+            }
+            else
+            {
+                printf("Storing object: %d color: %d in Pocket\n", object, color);
+                newDest->container.pocket.count = 1;
+                newDest->container.pocket.clrAndObj.color = color;
+                newDest->container.pocket.clrAndObj.object = object;
+                *mainDest = newDest;
+            }
+        break;
+        default:
+        break;
+    } 
 }
 
 /**
  * clear destination
  */
-void clearDestination(PlaceType place, Destination** dest)
+void clearDestination(StorageType storeType, Destination** dest)
 {
 }
 
 /**
  * move destination
  */
-void moveDestination(PlaceType place, Destination** dest)
+void moveDestination(StorageType storeType, Destination** dest)
 {
 }
 
@@ -281,6 +336,12 @@ void reset(Destination** dest)
 {
 } 
 
+
+
+/**
+ * Global Destination
+ */
+Destination destination; // = NULL;
 int main()
 {
     char buf[255];
@@ -288,11 +349,10 @@ int main()
     CommandType cmdType = ERRCMD;
     Color colType = ERRC;
     Object objType = ERRO;
-    ContainerType cntType = ERRCONT;
-    SurfaceType surfType = ERRSUR;
+    StorageType storeType = ERRSTORAGE;
 
-    PlaceType placeType;
-    Destination *destination;
+    Destination *dest = NULL;
+    Destination *mainDest = NULL;
 
     while ((fgets(buf, 255,stdin)) != NULL)
     {
@@ -319,47 +379,35 @@ int main()
                     if (objType != ERRO)
                     {
                         //check if the next word is "in" or "on"
-                        printf("Inside object condition, checking for in or on\n\n");
-
                         word = strtok(NULL, " ");
                         printf("in or on :%s\n", word);
-                        if (strcmp(word, "in") == 0)
+                        if ( strncmp(word, "in", 2) == 0 || strncmp(word, "on", 2) == 0)
                         {
-                            
-                            //get the container type
+                            //get the storage type
                             word = strtok(NULL, " ");
-                            cntType = getContainer(word);
-                            printf("Container type: %d\n", cntType);
-                            if (cntType != ERRCONT)
+                            storeType = getStorageType(word);
+                            printf("Store type: %d\n", storeType);
+                            if (storeType!= ERRSTORAGE)
                             {
-                                placeType.containerType = cntType;
-                                placeType.surfaceType = NOTSUR;
-                                populateDest(colType, objType, placeType, &destination);
+                                dest = mainDest;
+                                populateDest(colType, objType, storeType, dest, &mainDest);
+                                printf("After populate, Dest contains: color: %d, object: %d, count: %d\n\n", 
+                                        mainDest->container.pocket.clrAndObj.color, 
+                                        mainDest->container.pocket.clrAndObj.object,
+                                        mainDest->container.pocket.count);
+                    
                             }
                             else
-                                printf("Error in the cmd (container)...please try again\n\n");
-                            
-     
-                        }
-                        else if(strcmp(word, "on") == 0)
-                        {
-                            //get the surface type
-                            word = strtok(NULL, " ");
-                            surfType = getSurfaceType(word);
-                            printf("Surface Type: %d\n", surfType);
-                            if (surfType != ERRSUR)
-                            {
-                                placeType.surfaceType = surfType;
-                                placeType.containerType = NOTCONT;
-                                populateDest(colType, objType, placeType, &destination);
-                            }
-                            else
-                                printf("Error in the cmd (surface)... please try again\n\n");
+                                printf("Error in the cmd(either IN or ON)...please try again\n\n");
                         }
                         else
-                            printf("Error in the command (no in or on)... please try again..\n\n");
+                            printf("Error in the cmd (surface)... please try again\n\n");
                     }
+                    else
+                        printf("Erron in cmd, object is wrong..\n");
                 }
+                else
+                    printf("Error in cmd, Color is not matching...\n");
  
             break;
             case CLEAR:
