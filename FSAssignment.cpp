@@ -148,10 +148,10 @@ typedef struct destination
 CommandType getCmd(char* cmd)
 {
     CommandType cmdType;
-    printf("Received Command: %s\n", cmd);
+    //printf("Received Command: %s\n", cmd);
     if (strncmp(cmd, "place", 5) == 0)
     {
-        printf(" assign place command...\n");
+        //printf(" assign place command...\n");
         cmdType = PLACE;
     }
     else if (strncmp(cmd, "clear", 5) == 0)
@@ -186,7 +186,7 @@ CommandType getCmd(char* cmd)
 Color getColor(char* col)
 {
     Color colType;
-    printf("Received Color: %s\n", col);
+    //printf("Received Color: %s\n", col);
    
     if (strncmp(col, "green", 5) == 0)
     {
@@ -195,7 +195,7 @@ Color getColor(char* col)
     else if (strncmp(col, "yellow", 6) == 0)
     {
         colType = YELLOW;
-        printf("yellow color assign..\n");
+        //printf("yellow color assign..\n");
     }
     else if (strncmp(col, "black", 5) == 0)
     {
@@ -226,7 +226,7 @@ Color getColor(char* col)
 Object getObject(char* obj)
 {
     Object objType;
-    printf("Object received: %s\n", obj);
+    //printf("Object received: %s\n", obj);
 
     if (strncmp(obj, "ball", 4) == 0)
     {
@@ -238,7 +238,6 @@ Object getObject(char* obj)
     }
     else if (strncmp(obj, "eraser", 6) == 0)
     {
-        printf("eraser object assign...\n");
         objType = ERASER;
     }
     else if (strncmp(obj, "phone", 5) == 0)
@@ -262,7 +261,7 @@ Object getObject(char* obj)
  */
 StorageType getStorageType(char* store)
 {
-    printf("Received container: %s\n", store);
+    //printf("Received container: %s\n", store);
     StorageType storeType;
 
     if (strncmp(store, "pocket", 6) == 0)
@@ -291,30 +290,23 @@ bool isStorageEmpty(StorageType storeType, Destination dest)
     switch(storeType)
     {
         case POCKET:
-            if (dest.container.pocket.count == 0)
-                bResult = true;
+              bResult = (dest.container.pocket.count == 0)? true:false;
          break;
          case BAG:
-             if (dest.container.bag.count == 0)
-                 bResult = true;
+              bResult = (dest.container.bag.count == 0) ? true:false;
          break;
          case DRAWER:
-             if (dest.container.drawer.count == 0)
-                 bResult = true;
+             bResult = (dest.container.drawer.count == 0) ? true : false;
          break;
          case SHELF:
-             if (dest.surface.shelf.count == 0)
-                 bResult = true;
+             bResult = (dest.surface.shelf.count == 0)?true:false;
          break;
          case FLOOR:
-             if (dest.surface.floor.count == 0)
-                 bResult = true;
+             bResult = (dest.surface.floor.count == 0) ? true:false;
          break;
          case DESKTOP:
-             if (dest.surface.desktop.count == 0)
-                 bResult = true;
+             bResult = (dest.surface.desktop.count == 0)? true : false;
          break;
-
          default:
              printf("Error in isStorageEmpty\n");
          break;
@@ -327,14 +319,9 @@ bool isStorageEmpty(StorageType storeType, Destination dest)
 /**
  * Populate a destination
  */
-//void populateDest(Color color, Object object, StorageType storeType, Destination* tempDest, Destination** mainDest)
-  void populateDest(Color color, Object object, StorageType storeType, Destination& dest)
+void populateDest(Color color, Object object, StorageType storeType, Destination& dest)
 {
-    printf("populateDest received objects are:\n");
-    printf("color: %d\n", color);
-    printf("object: %d\n", object);
-    printf("Storage: %d\n", storeType);
-
+    
     if (!isStorageEmpty(storeType, dest))
     {
         printf("Error: Place is already full\n");
@@ -395,37 +382,37 @@ void clearDest(StorageType storeType, Destination& dest)
     switch(storeType)
     {
         case POCKET:
-                printf("Clearing the pocket container\n\n");
+                //printf("Clearing the pocket container\n\n");
                 dest.container.pocket.count  = 0;
                 dest.container.pocket.clrAndObj.color = RESETC;
                 dest.container.pocket.clrAndObj.object = RESETO;
          break;
          case BAG:
-                printf("Clearing the bag container\n\n");
+                //printf("Clearing the bag container\n\n");
                 dest.container.bag.count  = 0;
                 dest.container.bag.clrAndObj.color = RESETC;
                 dest.container.bag.clrAndObj.object = RESETO;
          break;
          case DRAWER:
-             printf("Clearing the drawer container\n\n");
+             //printf("Clearing the drawer container\n\n");
              dest.container.drawer.count = 0;
              dest.container.drawer.clrAndObj.color = RESETC;
              dest.container.drawer.clrAndObj.object = RESETO;
          break;
          case SHELF:
-             printf("Clearing the shelf surface\n\n");
+             //printf("Clearing the shelf surface\n\n");
              dest.surface.shelf.count = 0;
              dest.surface.shelf.clrAndObj.color = RESETC;
              dest.surface.shelf.clrAndObj.object = RESETO;
          break;
          case FLOOR:
-             printf("Clearing the floor surface\n\n");
+             //printf("Clearing the floor surface\n\n");
              dest.surface.floor.count = 0;
              dest.surface.floor.clrAndObj.color = RESETC;
              dest.surface.floor.clrAndObj.object = RESETO;
          break;
          case DESKTOP:
-             printf("Clearing the desktop surface\n\n");
+             //printf("Clearing the desktop surface\n\n");
              dest.surface.desktop.count = 0;
              dest.surface.desktop.clrAndObj.color = RESETC;
              dest.surface.desktop.clrAndObj.object = RESETO;
@@ -437,8 +424,6 @@ void clearDest(StorageType storeType, Destination& dest)
 
     }
 }
-
-
 
 /**
  * move destination
@@ -681,18 +666,134 @@ void moveDestination(StorageType fromStoreType, StorageType toStoreType, Destina
    
 }
 
+char* getObjectStr_(Object obj)
+{
+    char* objStr = (char*)malloc(10 * sizeof(char));
+    switch(obj)
+    {
+        case BALL:
+            strncpy(objStr, "ball", 4);
+        break;
+        case PEN:
+            strncpy(objStr, "pen", 3);
+        break;
+        case ERASER:
+            strncpy(objStr, "eraser", 6);
+        break;
+        case PHONE:
+            strncpy(objStr, "phone", 5);
+        break;
+        case WALLET:
+            strncpy(objStr, "wallet", 6);
+        break;
+        default:
+        break;
+     }
+     return objStr;
+}
+
+char* getObjectStr(StorageType storeType, Destination dest)
+{
+    char* objStr  = (char*)malloc(10*sizeof(char));
+    switch(storeType)
+    {
+        case POCKET:
+            objStr = getObjectStr_(dest.container.pocket.clrAndObj.object);
+        break;
+        case BAG:
+            objStr = getObjectStr_(dest.container.bag.clrAndObj.object);
+        break;
+        case DRAWER:
+             objStr = getObjectStr_(dest.container.drawer.clrAndObj.object);
+        break;
+        case SHELF:
+            objStr = getObjectStr_(dest.surface.shelf.clrAndObj.object);
+        break;
+        case DESKTOP:
+            objStr = getObjectStr_(dest.surface.desktop.clrAndObj.object);
+        break;
+        case FLOOR:
+            objStr = getObjectStr_(dest.surface.floor.clrAndObj.object);
+        break;
+        default:
+        break;
+    }
+    return objStr;
+}
+
+char* getColorStr_(Color col)
+{
+    char* colStr = (char*)malloc(10 * sizeof(char));
+
+    switch(col)
+    {
+        case GREEN:
+            strncpy(colStr, "green", 5);
+        break;
+        case YELLOW:
+            strncpy(colStr, "yellow", 6);
+        break;
+        case BLACK:
+            strncpy(colStr, "black", 5);
+        break;
+        case WHITE:
+            strncpy(colStr, "white", 5);
+        break;
+        case RED:
+            strncpy(colStr, "red", 3);
+        break;
+        case BLUE:
+            strncpy(colStr, "blue", 4);
+        break;
+        default:
+        break;
+     }
+     return colStr;
+}
+
+
+char* getColorStr(StorageType storeType, Destination dest)
+{
+    char* clrStr  = (char*)malloc(10*sizeof(char));
+    switch(storeType)
+    {
+        case POCKET:
+            clrStr = getColorStr_(dest.container.pocket.clrAndObj.color);
+        break;
+        case BAG:
+            clrStr = getColorStr_(dest.container.bag.clrAndObj.color);
+        break;
+        case DRAWER:
+             clrStr = getColorStr_(dest.container.drawer.clrAndObj.color);
+        break;
+        case SHELF:
+            clrStr = getColorStr_(dest.surface.shelf.clrAndObj.color);
+        break;
+        case DESKTOP:
+            clrStr = getColorStr_(dest.surface.desktop.clrAndObj.color);
+        break;
+        case FLOOR:
+            clrStr = getColorStr_(dest.surface.floor.clrAndObj.color);
+        break;
+        default:
+        break;
+    }
+    return clrStr;
+}
 
 /**
- * show
+ * show container / surface
  */
 
 void show(StorageType storeType, Destination dest)
 {
 
-    char colStr[25];
-    char objStr[25];
-    memset(colStr, 0, 25);
-    memset(objStr, 0, 25);
+    //char colStr[25];
+    //char objStr[25];
+    //memset(colStr, 0, 25);
+    //memset(objStr, 0, 25);
+    char* colStr = NULL;
+    char* objStr = NULL;
 
     //check if the given place is empty
     if (isStorageEmpty(storeType, dest))
@@ -700,114 +801,62 @@ void show(StorageType storeType, Destination dest)
         printf("Empty\n\n");
         return ;
     }
-   
-    switch (storeType)
-    {
-        case POCKET:
-        case BAG:
-        case DRAWER:
-            switch(dest.container.pocket.clrAndObj.color)
-            {
-                case GREEN:
-                    strncpy(colStr, "green", 5);
-                break;
-                case YELLOW:
-                    strncpy(colStr, "yellow", 6);
-                break;
-                case BLACK:
-                    strncpy(colStr, "black", 5);
-                break;
-                case WHITE:
-                    strncpy(colStr, "white", 5);
-                break;
-                case RED:
-                    strncpy(colStr, "red", 3);
-                break;
-                case BLUE:
-                    strncpy(colStr, "blue", 4);
-                break;
-                default:
-                break; 
-            }
-            switch(dest.container.pocket.clrAndObj.object)
-            {
-                case BALL:
-                    strncpy(objStr, "ball", 4);
-                break;
-                case PEN:
-                    strncpy(objStr, "pen", 3);
-                break;
-                case ERASER:
-                    strncpy(objStr, "eraser", 6);
-                break;
-                case WALLET:
-                    strncpy(objStr, "wallet", 6);
-                break;
-                case PHONE:
-                    strncpy(objStr, "phone", 5);
-                break;
-                default:
-                break;
-
-            }
-        break;
-        case SHELF:
-        case DESKTOP:
-        case FLOOR:
-
-            switch(dest.container.pocket.clrAndObj.color)
-            {
-                case GREEN:
-                    strncpy(colStr, "green", 5);
-                break;
-                case YELLOW:
-                    strncpy(colStr, "yellow", 6);
-                break;
-                case BLACK:
-                    strncpy(colStr, "black", 5);
-                break;
-                case WHITE:
-                    strncpy(colStr, "white", 5);
-                break;
-                case RED:
-                    strncpy(colStr, "red", 3);
-                break;
-                case BLUE:
-                    strncpy(colStr, "blue", 4);
-                break;
-                default:
-                break;
-            }
-            switch(dest.container.pocket.clrAndObj.object)
-            {
-                case BALL:
-                    strncpy(objStr, "ball", 4);
-                break;
-                case PEN:
-                    strncpy(objStr, "pen", 3);
-                break;
-                case ERASER:
-                    strncpy(objStr, "eraser", 6);
-                break;
-                case WALLET:
-                    strncpy(objStr, "wallet", 6);
-                break;
-                case PHONE:
-                    strncpy(objStr, "phone", 5);
-                break;
-                default:
-                break;
-
-            }      break;
-        default:
-        break;
-    }
+  
+    colStr = getColorStr(storeType, dest);
+    objStr = getObjectStr(storeType, dest);
+ 
     printf("%s   %s\n\n", colStr, objStr);
 
 }
 
+void dump(Destination dest)
+{
+    /**
+     * check for pocket container
+     */
+    if ( !isStorageEmpty(POCKET, dest))
+    {
+        printf("pocket:  ");
+        show(POCKET, dest);
+    }
+
+    if ( !isStorageEmpty(BAG, dest))
+    {
+        printf("Bag: ");
+        show(BAG, dest);
+    }
+
+    if ( !isStorageEmpty(DRAWER, dest))
+    {
+        printf("Drawer: ");
+        show(DRAWER, dest);
+    }
+
+    if ( !isStorageEmpty(SHELF, dest))
+    {
+        printf("Shelf: ");
+        show(SHELF, dest);
+    }
+
+    if ( !isStorageEmpty(DESKTOP, dest))
+    {
+        printf("desktop: ");
+        show(DESKTOP, dest);
+    }
+
+    if ( !isStorageEmpty(FLOOR, dest))
+    {
+        printf("floor: ");
+        show(FLOOR, dest);
+    }
+
+}
+
+
+
 void reset(Destination& dest)
 {
+    //printf("reset(), setting all color and objects\n");
     dest.container.pocket.count = 0;
     dest.container.pocket.clrAndObj.color  = RESETC;
     dest.container.pocket.clrAndObj.object = RESETO;
@@ -853,14 +902,17 @@ int main()
 
 
     Destination dest;// = NULL;
-    //Destination *mainDest = NULL;
+    /**
+     * reset the dest at the begining
+     */
+    reset(dest);
 
     while ((fgets(buf, 255,stdin)) != NULL)
     {
-       printf("%s\n", buf);
+       //printf("%s\n", buf);
        char *word;
         word = strtok(buf, " ");
-        printf("Command Type:%d\n\n", cmdType);
+        //printf("Command Type:%d\n\n", cmdType);
         cmdType = getCmd(word);
 
         switch (cmdType)
@@ -869,24 +921,24 @@ int main()
                 //get the color type
                 word = strtok(NULL, " ");
                 colType = getColor(word);
-                printf("Color type: %d\n", colType);
+                //printf("Color type: %d\n", colType);
                 if (colType != ERRC)
                 {
                     //get the object type
                     word = strtok(NULL, " ");
                     objType = getObject(word);
-                    printf("Object type:%d\n", objType);
+                    //printf("Object type:%d\n", objType);
                     if (objType != ERRO)
                     {
                         //check if the next word is "in" or "on"
                         word = strtok(NULL, " ");
-                        printf("in or on :%s\n", word);
+                        //printf("in or on :%s\n", word);
                         if ( strncmp(word, "in", 2) == 0 || strncmp(word, "on", 2) == 0)
                         {
                             //get the storage type
                             word = strtok(NULL, " ");
                             storeType = getStorageType(word);
-                            printf("Store type: %d\n", storeType);
+                            //printf("Store type: %d\n", storeType);
                             if (storeType!= ERRSTORAGE)
                             {
                                 populateDest(colType, objType, storeType, dest);
@@ -906,11 +958,11 @@ int main()
  
             break;
             case CLEAR:
-                printf("clear cmd received\n\n");
+                //printf("clear cmd received\n\n");
                 //get the storage type
                 word = strtok(NULL, " ");
                 storeType = getStorageType(word);
-                printf("Store Type: %d\n", storeType);
+                //printf("Store Type: %d\n", storeType);
                 if (storeType != ERRSTORAGE)
                 {
                     clearDest(storeType, dest);
@@ -922,7 +974,7 @@ int main()
 
             break;
             case MOVE:
-                printf("move cmd recevied\n\n");
+                //printf("move cmd recevied\n\n");
                 //get the storage (place)
                 word = strtok(NULL, " ");
                 fromStoreType = getStorageType(word);
@@ -948,7 +1000,7 @@ int main()
                 
             break;
             case SHOW:
-                printf("show cmd recevied\n\n");
+               // printf("show cmd recevied\n\n");
                 //get the place 
                 word = strtok(NULL, " ");
                 storeType = getStorageType(word);
@@ -958,10 +1010,11 @@ int main()
                 }
             break;
             case DUMP:
-                printf("dump cmd received\n\n");
+                //printf("dump cmd received\n\n");
+                dump(dest);
             break;
             case RESET:
-                printf("reset cmd received\n\n");
+                //printf("reset cmd received\n\n");
                 reset(dest);
             break;
             default:
@@ -974,21 +1027,3 @@ int main()
     return 0;
 }
 
-
-/**
- * Another Sample to get individual words
- */
-/* get the first word from the message, seperated by
-	 * space character */
-//	 char* word;
-//	 word = strtok(message, " ");
-//         printf("1st word: %s\n", word);
-/* get the second word from the message, NULL must be
-* used to get tokens from the previous string now */
-//word = strtok(NULL, " ");
-//printf("2nd word: %s\n", word);
-/* the following loop gets the rest of the words until the
- * end of the message */
-//while ((word = strtok(NULL, " ")) != NULL)
-//printf("Next: %s\n", word);
-//return 0;
